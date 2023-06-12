@@ -1,14 +1,30 @@
 {
-    "name": "@mysten/core",
-    "main": "src/index.ts",
-    "private": true,
-    "sideEffects": false,
+    "name": "@test-libraries2022/mysten-core",
     "author": "Mysten Labs <build@mystenlabs.com>",
     "repository": {
         "type": "git",
         "url": "github.com:MystenLabs/sui.git"
     },
     "license": "Apache-2.0",
+    "files": [
+        "dist",
+        "src",
+        "CHANGELOG.md"
+    ],
+    "engines": {
+        "node": ">=16"
+    },
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "source": "./src/index.ts",
+            "import": "./dist/index.mjs",
+            "require": "./dist/index.js"
+        }
+    },
     "scripts": {
         "prettier:check": "prettier -c --ignore-unknown .",
         "prettier:fix": "prettier -w --ignore-unknown .",
@@ -18,17 +34,24 @@
         "lint": "pnpm run eslint:check && pnpm run prettier:check",
         "lint:fix": "pnpm run eslint:fix && pnpm run prettier:fix",
         "test": "vitest run",
-        "test:watch": "vitest"
+        "test:watch": "vitest",
+        "dev": "pnpm build:tsup --watch",
+        "build": "node genversion.mjs && pnpm build:types && pnpm build:tsup",
+        "build:tsup": "tsup ./src/index.ts --format esm,cjs --sourcemap",
+        "build:types": "tsc --build"
     },
     "dependencies": {
         "@amplitude/analytics-client-common": "^0.7.0",
         "@amplitude/analytics-core": "^0.13.3",
         "@amplitude/analytics-types": "^0.20.0",
         "@growthbook/growthbook-react": "^0.15.0",
+        "@iarna/toml": "^2.2.5",
         "@mysten/sui.js": "workspace:*",
         "@sentry/react": "^7.47.0",
         "@tanstack/react-query": "^4.29.3",
+        "@types/bs58": "^4.0.1",
         "bignumber.js": "^9.1.1",
+        "bs58": "^5.0.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "vanilla-cookieconsent": "^2.9.1"
@@ -46,8 +69,10 @@
         "postcss": "^8.4.24",
         "prettier": "^2.8.7",
         "tailwindcss": "^3.3.1",
+        "tsup": "^6.7.0",
         "typescript": "^5.0.4",
         "vite": "^4.2.3",
         "vitest": "^0.30.1"
-    }
+    },
+    "version": "0.0.4"
 }
